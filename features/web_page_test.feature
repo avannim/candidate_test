@@ -15,8 +15,8 @@
 
     Сценарий: Работа с web-страницей
 
-      Когда захожу на страницу "http://google.com"
-      И ввожу в поисковой строке текст "cucumber.io"
-      И кликаю по строке выдачи с адресом https://cucumber.io
-
-      Тогда я должен увидеть текст на странице "Thousands of teams worldwide trust Cucumber to deliver better products, faster."
+      Когда захожу на страницу "https://www.ruby-lang.org/ru/"
+      И кликаю по кнопке с адресом "https://www.ruby-lang.org/ru/downloads/"
+      И кликаю по первой ссылке содержащей "https://cache.ruby-lang.org/"
+      Тогда проверяю наличие файла "ruby-3.1.1.tar.gz"
+      И проверяю соответствие имени скачанного файла "ruby-3.1.1.tar.gz" с именем файла по ссылке "https://cache.ruby-lang.org/pub/ruby/3.1/ruby-3.1.2.tar.gz" на сайте
