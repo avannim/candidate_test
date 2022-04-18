@@ -55,3 +55,35 @@ When(/^нахожу пользователя с логином (\w+\.\w+)$/) do 
 
   $logger.info("Найден пользователь #{login} с id:#{@scenario_data.users_id[login]}")
 end
+
+When(/^удаляю пользователя c логином (\w+\.\w+)$/) do |login|
+  response = $rest_wrap.delete('/users', login: login)
+  $logger.info(response.inspect)
+end
+
+When(/^пользователю c логином (\w+\.\w+) передаю имя (\w+) фамилию (\w+) пароль ([\d\w@!#]+)$/) do
+|login, name, surname, password|
+
+  response = $rest_wrap.put('/users', login: login,
+                             name: name,
+                             surname: surname,
+                             password: password,
+                             active: 1)
+  $logger.info(response.inspect)
+end
+
+When(/^проверяю (наличие|отсутствие) логина (\w+\.\w+) с именем (\w+) фамилией (\w+) паролем ([\d\w@!#]+)$/) do |presence, login, name, surname, password|
+  search_login_in_list = true
+  presence == 'отсутствие' ? search_login_in_list = !search_login_in_list : search_login_in_list
+
+  logins_from_site = @scenario_data.users_full_info.map { |f| f.try(:[], 'login') }
+  login_presents = logins_from_site.include?(login)
+
+  if login_presents
+    message = "Логин #{login} с именем #{name} фамилией #{surname} паролем #{password} присутствует в списке пользователей"
+    search_login_in_list ? $logger.info(message) : raise(message)
+  else
+    message = "Логин #{login} отсутствует в списке пользователей"
+    search_login_in_list ? raise(message) : $logger.info(message)
+  end
+end
