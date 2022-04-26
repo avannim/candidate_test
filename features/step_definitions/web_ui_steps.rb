@@ -26,22 +26,24 @@ When(/^я должен увидеть текст на странице "([^"]*)"
   expect(page).to have_text text_page
 end
 
-When(/^кликаю по кнопке с адресом "(.+?)"$/) do |url|
-  link_first = find("//a[@href='#{url}/']/div")
+When(/^кликаю по кнопке "([^"]*)"$/) do |text|
+  link_first = first("//a[text()='#{text}']")
   link_first.click
-  $logger.info("Переход на страницу #{url} осуществлен")
+  $logger.info("Переход на страницу #{text} осуществлен")
   sleep 1
 end
 
-When(/^кликаю по первой ссылке содержащей "(.+?)"$/) do |url|
-  link_first = find("//a[contains(@href,'#{url}/'][1]/div")
+When(/^кликаю по первой ссылке после заголовка "([^"]*)"$/) do |text|
+  link_first=first("//li[strong[text()[contains(.,'#{text}')]]]//a")
   link_first.click
   $logger.info("Загрузка файла начата")
-  sleep 1
+  sleep 20
 end
 
-When(/^проверяю наличие файла "(.+?)"$/) do |name|
-  if File.exist?(name)
+Then(/^проверяю наличие файла "(.+?)"$/) do |name|
+
+file_name = File.file?(name)
+  if file_name = true
     $logger.info("Файл загружен")
   else
     $logger.info("Файл не загружен")
@@ -49,13 +51,27 @@ When(/^проверяю наличие файла "(.+?)"$/) do |name|
   sleep 1
 end
 
-When(/^проверяю соответствие имени скачанного файла "(.+?)" с именем файла по ссылке "(.+?)" на сайте$/) do |name, site_name|
+Then(/^проверяю наличие файла скачанного по ссылке после заголовка "([^"]*)" в папке "([^"]*)"$/) do |name, link|
+  first_link = first("//li[strong[text()[contains(.,'#{name}')]]]//a")[:href]
+  file_name = File.basename(first_link)
+  e_file = File.exist?(link+file_name)
+  if e_file = true
+    $logger.info("Стабильная версия загружена в папку #{link}")
+  else
+    $logger.info("Файл не загружен")
+  end
+  sleep 1
+end
+
+
+When(/^проверяю соответствие имени скачанного файла "(.+?)" с именем файла по ссылке после заголовка "([^"]*)"$/) do |name, text|
   file_name = name
-  sname = File.readlink(site_name)
-  if file_name == sname
+  element = first("//li[strong[text()[contains(.,'#{text}')]]]//a")[:href]
+  sname = element.include?("#{file_name}")
+  if sname = true
     $logger.info("Загружена стабильная версия")
   else
-    $logger.info("Загружена не верный файл")
+    $logger.info("Загружен не верный файл")
   end
   sleep 1
 end
