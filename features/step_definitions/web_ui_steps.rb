@@ -42,8 +42,9 @@ end
 
 Then(/^проверяю наличие файла "(.+?)"$/) do |name|
 
-file_name = File.file?(name)
-  if file_name = true
+file_name = File.exist?("/tmp/#{name}")
+puts file_name
+  if file_name == true
     $logger.info("Файл загружен")
   else
     $logger.info("Файл не загружен")
@@ -52,10 +53,10 @@ file_name = File.file?(name)
 end
 
 Then(/^проверяю наличие файла скачанного по ссылке после заголовка "([^"]*)" в папке "([^"]*)"$/) do |name, link|
-  first_link = first("//li[strong[text()[contains(.,'#{name}')]]]//a")[:href]
-  file_name = File.basename(first_link)
-  e_file = File.exist?(link+file_name)
-  if e_file = true
+  first_link = File.basename(first("//li[strong[text()[contains(.,'#{name}')]]]//a")[:href])
+  file_name = Dir.pwd+link+first_link
+  e_file = File.exist?(file_name)
+  if e_file == true
     $logger.info("Стабильная версия загружена в папку #{link}")
   else
     $logger.info("Файл не загружен")
@@ -67,11 +68,13 @@ end
 When(/^проверяю соответствие имени скачанного файла "(.+?)" с именем файла по ссылке после заголовка "([^"]*)"$/) do |name, text|
   file_name = name
   element = first("//li[strong[text()[contains(.,'#{text}')]]]//a")[:href]
-  sname = element.include?("#{file_name}")
-  if sname = true
+  puts element.class
+  sname = element.include?(file_name)
+  if sname == true
     $logger.info("Загружена стабильная версия")
   else
     $logger.info("Загружен не верный файл")
   end
   sleep 1
 end
+
