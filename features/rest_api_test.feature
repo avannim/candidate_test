@@ -29,12 +29,12 @@
     И нахожу пользователя с логином <login>
     И пользователю c логином <login> передаю имя <name> фамилию <surname>
     И получаю информацию о пользователях
-    Тогда нахожу пользователя с логином <login> с именем <name> фамилией <surname>
+    Тогда нахожу пользователя с логином <login2> с именем <name2> фамилией <surname2>
     Примеры:
-      | login    | name | surname |
-      | i.ivanov | Igor | Guriev  |
-      | f.akelogin | Georg | Art  |
-      | i.test | Oksana | Potrebko  |
+      | login    | name | surname | login2  | name2  | surname2  |
+      | i.ivanov | Igor | Guriev  |  i.ivanov | Igor | Guriev  |
+      | f.akelogin | Georg | Art  |  f.akelogin | Igor | Art  |
+      | i.test | Oksana | Potrebko |  i.test | Oksana | Potrebko |
 
 
   Структура сценария: Удаление пользователя
