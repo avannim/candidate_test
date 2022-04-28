@@ -69,11 +69,6 @@ end
 
 When(/^пользователю c логином (\w+\.\w+) передаю имя (\w+) фамилию (\w+)$/) do
 |login, name, surname|
-  if @scenario_data.users_id[login].nil?
-    @scenario_data.users_id[login] = find_user_id(users_information: @scenario_data
-                                                                       .users_full_info,
-                                                  user_login: login)
-  end
   id=@scenario_data.users_id[login]
   response = $rest_wrap.put('/users/'+"#{id}", name: name,
                              surname: surname,
