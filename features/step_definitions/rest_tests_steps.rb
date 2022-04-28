@@ -82,13 +82,6 @@ When(/^пользователю c логином (\w+\.\w+) передаю им�
 end
 
 When(/^нахожу пользователя с логином (\w+\.\w+) с именем (\w+) фамилией (\w+)$/) do |login, name, surname|
-  login_id = @scenario_data.users_id[login].nil?
-  if @scenario_data.users_id[login].nil?
-    @scenario_data.users_id[login] = find_user_id(users_information: @scenario_data
-                                                                       .users_full_info,
-                                                  user_login: login)
-  end
-
   users_name = 0
   users_surname = 0
   @scenario_data.users_full_info.each do |user|
@@ -99,7 +92,7 @@ When(/^нахожу пользователя с логином (\w+\.\w+) с и�
     end
   end
 
-  if login_id == false && users_name == name && users_surname == surname
+  if users_name == name && users_surname == surname
     $logger.info("Логин #{login} с именем #{name} фамилией #{surname} присутствует в списке пользователей")
     else
       $logger.info("Логин #{login} с именем #{name} фамилией #{surname} отсутствует в списке пользователей")
