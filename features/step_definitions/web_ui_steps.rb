@@ -65,16 +65,3 @@ Then(/^проверяю наличие файла скачанного по сс
 end
 
 
-When(/^проверяю соответствие имени скачанного файла "(.+?)" с именем файла по ссылке после заголовка "([^"]*)"$/) do |name, text|
-  file_name = name
-  element = first("//li[strong[text()[contains(.,'#{text}')]]]//a")[:href]
-  puts element.class
-  sname = element.include?(file_name)
-  if sname == true
-    $logger.info("Загружена стабильная версия")
-  else
-    $logger.info("Загружен не верный файл")
-  end
-  sleep 1
-end
-
